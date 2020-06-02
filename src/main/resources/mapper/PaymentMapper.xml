@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.payment.mapper.PaymentMapper">
+	<insert id="cardPayProcessDataInsert" parameterType="CardPayModel">
+		INSERT INTO CARD_PAYMENT_TRANS (
+			UNIQUE_ID,
+			STATUS,
+			AMOUNT,
+			TAX,
+			ENC_CARD_NUMBER,
+			ENC_CARD_EXPIRE,
+			ENC_CARD_CVC,
+			CARD_QUOTA,
+			TRANSACTION_ID,
+			REGIST_DATE
+		) VALUES (
+			#{uniqueId},
+			#{status},
+			#{amount},
+			#{tax},
+			#{encCardNumber},
+			#{encCardExpire},
+			#{encCardCvc},
+			#{cardQuota},
+			#{transactionId},
+			CURRENT_TIMESTAMP()
+		)
+	</insert>
+
+	<update id="cardPayProcessPayUpdate" parameterType="CardPayModel">
+		UPDATE CARD_PAYMENT_TRANS 
+		SET UPDATE_DATE = CURRENT_TIMESTAMP()
+			, APPL_DATE = #{applDate}
+			, STATUS = #{status}
+		WHERE UNIQUE_ID = #{uniqueId}
+	</update>
+	
+	<select id="payInquiry" parameterType="CardPayModel" resultType="CardPayModel">
+		SELECT 
+			UNIQUE_ID,
+			STATUS,
+			AMOUNT,
+			TAX,
+			ENC_CARD_NUMBER,
+			ENC_CARD_EXPIRE,
+			ENC_CARD_CVC,
+			CARD_QUOTA,
+			APPL_DATE,
+			CANCEL_DATE
+		FROM CARD_PAYMENT_TRANS
+		WHERE
+			UNIQUE_ID = #{uniqueId}
+	</select>
+	
+	<select id="cancelAbleAmountSelect" parameterType="CardPayModel" resultType="CancelAbleAmountModel">
+		SELECT
+			(AMOUNT - SELECT NVL(SUM(AMOUNT), 0) FROM CARD_CANCEL_TRANS WHERE UNIQUE_ID = #{uniqueId} AND STATUS IN ('CANCEL', 'PRTCCANCEL')) AS cancelAbleAmount,
+			(TAX - SELECT NVL(SUM(TAX), 0) FROM CARD_CANCEL_TRANS WHERE UNIQUE_ID = #{uniqueId} AND STATUS IN ('CANCEL', 'PRTCCANCEL')) AS cancelAbleTax				
+		FROM CARD_PAYMENT_TRANS
+		WHERE 
+			UNIQUE_ID = #{uniqueId}
+			AND STATUS = 'PAY'
+	</select>
+	
+	<insert id="cardCancelProcessDataInsert" parameterType="CardPayModel">
+		INSERT INTO CARD_CANCEL_TRANS (
+			CANCEL_UNIQUE_ID,
+			STATUS,
+			AMOUNT,
+			TAX,
+			UNIQUE_ID,
+			TRANSACTION_ID,
+			REGIST_DATE
+		) VALUES (
+			#{cancelUniqueId},
+			#{status},
+			#{amount},
+			#{tax},
+			#{uniqueId},
+			#{transactionId},
+			CURRENT_TIMESTAMP()
+		)
+	</insert>
+	
+	<update id="cardPayProcessCancelUpdate" parameterType="CardPayModel">
+		UPDATE CARD_PAYMENT_TRANS 
+		SET UPDATE_DATE = CURRENT_TIMESTAMP()
+			, CANCEL_DATE = #{cancelDate}
+			, STATUS = #{status}
+		WHERE UNIQUE_ID = #{uniqueId}
+	</update>
+	
+	<update id="cardCancelProcessDataUpdate" parameterType="CardPayModel">
+		UPDATE CARD_CANCEL_TRANS 
+		SET UPDATE_DATE = CURRENT_TIMESTAMP()
+			, CANCEL_DATE = #{cancelDate}
+			, STATUS = #{status}
+		WHERE CANCEL_UNIQUE_ID = #{cancelUniqueId}
+	</update>
+</mapper>
