@@ -101,4 +101,27 @@
 			, STATUS = #{status}
 		WHERE CANCEL_UNIQUE_ID = #{cancelUniqueId}
 	</update>
+	
+	<insert id="lockKeyInsert" parameterType="TransactionLockModel">
+		INSERT INTO PAYMENT_TRANSACTION_LOCK (
+			TRANSACTION_KEY,
+			TRANSACTION_ID,
+			REGIST_DATE
+		) VALUES (
+			#{transactionKey},
+			#{transactionId},
+			CURRENT_TIMESTAMP()
+		)	
+	</insert>
+	
+	<delete id="lockKeyDelete" parameterType="TransactionLockModel">
+		DELETE FROM PAYMENT_TRANSACTION_LOCK 
+		WHERE TRANSACTION_KEY = #{transactionKey}
+	</delete>
+	
+	<select id="lockKeySelect" parameterType="TransactionLockModel" resultType="Integer">
+		SELECT COUNT(*)
+		FROM PAYMENT_TRANSACTION_LOCK
+		WHERE TRANSACTION_KEY = #{transactionKey}
+	</select>
 </mapper>

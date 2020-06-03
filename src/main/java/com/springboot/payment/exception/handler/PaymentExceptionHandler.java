@@ -18,6 +18,7 @@ import com.springboot.payment.exception.customException.CardpayInitializeExcepti
 import com.springboot.payment.exception.customException.DataBaseException;
 import com.springboot.payment.exception.customException.NoContentException;
 import com.springboot.payment.exception.customException.NoPaymentException;
+import com.springboot.payment.exception.customException.TransactionLockException;
 
 @RestControllerAdvice
 public class PaymentExceptionHandler {
@@ -105,4 +106,11 @@ public class PaymentExceptionHandler {
 		return new ResponseEntity<>(paymentErrorResponse.of(e.errorCdoe), HttpStatus.OK);
 	}
 	
+	@ExceptionHandler(TransactionLockException.class)
+	public ResponseEntity<PaymentErrorResponse> handleTransactionException(TransactionLockException e) {
+
+		logger.warn("TRANSACTION EXEPTION : {}", e.getMessage());
+
+		return new ResponseEntity<>(paymentErrorResponse.of(e.errorCdoe), HttpStatus.OK);
+	}
 }

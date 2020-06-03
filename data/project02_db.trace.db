@@ -1809,3 +1809,105 @@ TRANSACTION_KEY VARCHAR2(100) NOT NULL PRIMARY KEY,
 TRANSACTION_ID VARCHAR2(100) NOT NULL,
 REGIST_DATE TIMESTAMP
 ) [42001-200]
+2020-06-03 22:53:59 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO PAYMENT_TRANSATION_CONTROLL 
+			TRANSACTION_KEY[*],
+			TRANSACTION_ID
+		VALUES
+			?,
+			?"; expected "., (, DIRECT, SORTED, DEFAULT, VALUES, SET, (, WITH, SELECT, TABLE, VALUES"; SQL statement:
+INSERT INTO PAYMENT_TRANSATION_CONTROLL 
+			TRANSACTION_KEY,
+			TRANSACTION_ID
+		VALUES
+			?,
+			? [42001-200]
+2020-06-03 22:57:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO PAYMENT_TRANSATION_CONTROLL 
+			TRANSACTION_KEY[*],
+			TRANSACTION_ID
+		VALUES
+			?,
+			?"; expected "., (, DIRECT, SORTED, DEFAULT, VALUES, SET, (, WITH, SELECT, TABLE, VALUES"; SQL statement:
+INSERT INTO PAYMENT_TRANSATION_CONTROLL 
+			TRANSACTION_KEY,
+			TRANSACTION_ID
+		VALUES
+			?,
+			? [42001-200]
+2020-06-03 22:59:59 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO PAYMENT_TRANSATION_CONTROLL 
+			TRANSACTION_KEY[*],
+			TRANSACTION_ID,
+			REGIST_DATE
+		VALUES
+			?,
+			?,
+			CURRENT_TIMESTAMP()"; expected "., (, DIRECT, SORTED, DEFAULT, VALUES, SET, (, WITH, SELECT, TABLE, VALUES"; SQL statement:
+INSERT INTO PAYMENT_TRANSATION_CONTROLL 
+			TRANSACTION_KEY,
+			TRANSACTION_ID,
+			REGIST_DATE
+		VALUES
+			?,
+			?,
+			CURRENT_TIMESTAMP() [42001-200]
+2020-06-03 23:04:14 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "ALTER PAYMENT_TRANSACTION_CONTROLL[*] ALTER COLUMN TRANSACTION_KEY VARCHAR2(300) NOT NULL PRIMARY KEY"; expected "TABLE, USER, INDEX, SCHEMA, SEQUENCE, VIEW"; SQL statement:
+alter PAYMENT_TRANSACTION_CONTROLL alter column TRANSACTION_KEY VARCHAR2(300) NOT NULL PRIMARY KEY [42001-200]
+2020-06-03 23:04:49 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "ALTER PAYMENT_TRANSACTION_CONTROLL[*] ALTER COLUMN TRANSACTION_KEY VARCHAR2(300)"; expected "TABLE, USER, INDEX, SCHEMA, SEQUENCE, VIEW"; SQL statement:
+alter PAYMENT_TRANSACTION_CONTROLL alter column TRANSACTION_KEY VARCHAR2(300) [42001-200]
+2020-06-03 23:06:51 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PAYMENT_TRANSACTION_CONTROLL" not found; SQL statement:
+drop table PAYMENT_TRANSACTION_CONTROLL [42102-200]
+2020-06-03 23:07:01 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PAYMENT_TRANSACTION_CONTROLL" not found; SQL statement:
+drop table PAYMENT_TRANSACTION_CONTROLL [42102-200]
+2020-06-03 23:09:56 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement ")[*]"; SQL statement:
+) [42000-200]
+2020-06-03 23:10:53 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PAYMENT_TRANSATION_CONTROLL" not found; SQL statement:
+SELECT COUNT(*)
+		FROM PAYMENT_TRANSATION_CONTROLL
+		WHERE TRANSACTION_KEY = ? [42102-200]
+2020-06-03 23:10:53 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PAYMENT_TRANSATION_CONTROLL" not found; SQL statement:
+DELETE FROM PAYMENT_TRANSATION_CONTROLL 
+		WHERE TRANSACTION_KEY = ? [42102-200]
+2020-06-03 23:12:19 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO PAYMENT_TRANSACTION_CONTROLL
+			TRANSACTION_KEY[*],
+			TRANSACTION_ID,
+			REGIST_DATE
+		VALUES
+			?,
+			?,
+			CURRENT_TIMESTAMP()"; expected "., (, DIRECT, SORTED, DEFAULT, VALUES, SET, (, WITH, SELECT, TABLE, VALUES"; SQL statement:
+INSERT INTO PAYMENT_TRANSACTION_CONTROLL
+			TRANSACTION_KEY,
+			TRANSACTION_ID,
+			REGIST_DATE
+		VALUES
+			?,
+			?,
+			CURRENT_TIMESTAMP() [42001-200]
+2020-06-03 23:14:40 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CARD_CANCEL_TRANS[*]"; expected "COMMIT, CREATE, CALL, CHECKPOINT, COMMENT"; SQL statement:
+CARD_CANCEL_TRANS [42001-200]
+2020-06-03 23:15:11 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROMPAYMENT_TRANSACTION_CONTROLL[*]"; SQL statement:
+select * fromPAYMENT_TRANSACTION_CONTROLL [42000-200]
+2020-06-03 23:20:15 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PAYMETN_TRANSATION_CONTROLL" not found; SQL statement:
+drop table PAYMETN_TRANSATION_CONTROLL [42102-200]
+2020-06-03 23:20:22 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PAYMENT_TRANSATION_CONTROLL" not found; SQL statement:
+drop table PAYMENT_TRANSATION_CONTROLL [42102-200]
+2020-06-03 23:20:30 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PAYMENT_TRANSATION_CONTROLL" not found; SQL statement:
+drop table PAYMENT_TRANSATION_CONTROLL [42102-200]
+2020-06-03 23:20:42 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PAYMENT_PAYMENT_TRANSACTION_CONTROLL" not found; SQL statement:
+drop table PAYMENT_PAYMENT_TRANSACTION_CONTROLL [42102-200]
