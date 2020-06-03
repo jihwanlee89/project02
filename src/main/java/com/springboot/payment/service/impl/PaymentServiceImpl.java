@@ -45,11 +45,11 @@ public class PaymentServiceImpl implements PaymentService {
 		cardPayModel.setUniqueId(GenerateIdTool.generatePayUniqueId());
 		cardPayModel.setAmount(cardPayRequestVo.getAmount());
 		cardPayModel.setTax(cardPayRequestVo.tax);
-		cardPayModel.setEncCardNumber(CryptoUtil.seedCbcEncrypt(cardPayRequestVo.getCard_number()));
-		cardPayModel.setEncCardExpire(CryptoUtil.seedCbcEncrypt(cardPayRequestVo.getCard_exprie()));
-		cardPayModel.setEncCardCvc(CryptoUtil.seedCbcEncrypt(cardPayRequestVo.getCard_cvc()));
-		cardPayModel.setCardQuota(cardPayRequestVo.getCard_quota());
-		cardPayModel.setTransactionId(cardPayRequestVo.transaction_id);
+		cardPayModel.setEncCardNumber(CryptoUtil.seedCbcEncrypt(cardPayRequestVo.getCardNumber()));
+		cardPayModel.setEncCardExpire(CryptoUtil.seedCbcEncrypt(cardPayRequestVo.getCardExpire()));
+		cardPayModel.setEncCardCvc(CryptoUtil.seedCbcEncrypt(cardPayRequestVo.getCardCvc()));
+		cardPayModel.setCardQuota(cardPayRequestVo.getCardQuota());
+		cardPayModel.setTransactionId(cardPayRequestVo.transactionId);
 		cardPayModel.setStatus("READY");
 
 		/* DATA DB 저장 START */
@@ -139,10 +139,10 @@ public class PaymentServiceImpl implements PaymentService {
 		cancleAbleAmount = cancelAbleAmountModel.getCancelAbleAmount();
 		cancelAbleTax = cancelAbleAmountModel.getCancelAbleTax();
 		cancelRequestAmount = payCancelRequestVo.getAmount();
-		if(payCancelRequestVo.getTax() != null) {
+		if (payCancelRequestVo.getTax() != null) {
 			cancelRequestTax = payCancelRequestVo.getTax();
 		}
-		
+
 		logger.info("취소가능 금액  : " + cancleAbleAmount);
 		logger.info("취소요청 금액 : " + cancelRequestAmount);
 		logger.info("취소가능 부가세  : " + cancelAbleTax);
@@ -161,7 +161,8 @@ public class PaymentServiceImpl implements PaymentService {
 			cardPayModel = paymentMapper.payInquiry(cardPayModel);
 			cardPayModel.setStatus("READY");
 			cardPayModel.setCancelUniqueId(GenerateIdTool.generateCancelUniqueId());
-			cardPayModel.setTransactionId(payCancelRequestVo.getTransaction_id());
+			cardPayModel.setTransactionId(payCancelRequestVo.getTransactionId());
+			cardPayModel.setAmount(cancelRequestAmount);
 			// 전체 취소시 남아있는 부가세를 전부 취소한다.
 			cardPayModel.setTax(cancelRequestTax);
 			try {
@@ -218,13 +219,13 @@ public class PaymentServiceImpl implements PaymentService {
 
 			// 부분취소
 		} else if (cancleAbleAmount > cancelRequestAmount) {
-			
-			//부가가치세 null 일 경우 부가가치세 자동 셋팅
+
+			// 부가가치세 null 일 경우 부가가치세 자동 셋팅
 			if (payCancelRequestVo.getTax() == null) {
 				cancelRequestTax = (int) Math.round((double) payCancelRequestVo.getAmount() / (double) 11);
 			}
-			
-			//요청 부가가치세가 취소가능한 부가가치세 보다 클때 에러처리
+
+			// 요청 부가가치세가 취소가능한 부가가치세 보다 클때 에러처리
 			if (cancelRequestTax > cancelAbleTax) {
 				throw new CancelAmountException(ErrorCode.ER005);
 			}
@@ -232,7 +233,7 @@ public class PaymentServiceImpl implements PaymentService {
 			cardPayModel = paymentMapper.payInquiry(cardPayModel);
 			cardPayModel.setStatus("READY");
 			cardPayModel.setCancelUniqueId(GenerateIdTool.generateCancelUniqueId());
-			cardPayModel.setTransactionId(payCancelRequestVo.getTransaction_id());
+			cardPayModel.setTransactionId(payCancelRequestVo.getTransactionId());
 			// 취소 요청 금액 셋팅
 			cardPayModel.setAmount(cancelRequestAmount);
 			// 취소 요청 부가세 셋팅

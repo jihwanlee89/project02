@@ -5,13 +5,15 @@ import org.springframework.stereotype.Component;
 import com.springboot.payment.exception.code.ErrorCode;
 import com.springboot.payment.exception.customException.CardpayInitializeException;
 import com.springboot.payment.requestVo.CommonRequestVo;
+import com.springboot.payment.requestVo.payCancelVo.PayCancelRequestVo;
+import com.springboot.payment.requestVo.payExecuteVo.CardPayRequestVo;
 
 @Component
 public class CardInitialize {
 
 	public void requestPayInitialize(CommonRequestVo commonRequestVo) throws Exception {
 
-		int amount = commonRequestVo.getAmount();
+		int amount = ((CardPayRequestVo) commonRequestVo).getAmount();
 
 		if (commonRequestVo.getTax() == null) {
 			int tax = (int) Math.round((double) amount / (double) 11);
@@ -22,10 +24,10 @@ public class CardInitialize {
 		}
 
 	}
-	
+
 	public void requestCancelInitialize(CommonRequestVo commonRequestVo) throws Exception {
 
-		int amount = commonRequestVo.getAmount();
+		int amount = ((PayCancelRequestVo) commonRequestVo).getAmount();
 
 		if (commonRequestVo.getTax() == null) {
 

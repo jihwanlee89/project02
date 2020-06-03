@@ -41,6 +41,8 @@
 			STATUS,
 			AMOUNT,
 			TAX,
+			NVL(CANCEL_AMOUNT, 0) AS cancelAmount,
+			NVL(CANCEL_TAX, 0) AS cancelTax,
 			ENC_CARD_NUMBER,
 			ENC_CARD_EXPIRE,
 			ENC_CARD_CVC,
@@ -59,7 +61,6 @@
 		FROM CARD_PAYMENT_TRANS
 		WHERE 
 			UNIQUE_ID = #{uniqueId}
-			AND STATUS = 'PAY'
 	</select>
 	
 	<insert id="cardCancelProcessDataInsert" parameterType="CardPayModel">
@@ -84,7 +85,10 @@
 	
 	<update id="cardPayProcessCancelUpdate" parameterType="CardPayModel">
 		UPDATE CARD_PAYMENT_TRANS 
-		SET UPDATE_DATE = CURRENT_TIMESTAMP()
+		SET 
+			CANCEL_AMOUNT = NVL(CANCEL_AMOUNT, 0) + #{amount}
+			, CANCEL_TAX = NVL(CANCEL_TAX, 0) + #{tax}
+			, UPDATE_DATE = CURRENT_TIMESTAMP()
 			, CANCEL_DATE = #{cancelDate}
 			, STATUS = #{status}
 		WHERE UNIQUE_ID = #{uniqueId}

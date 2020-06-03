@@ -17,9 +17,28 @@ public class CardPayModel {
 	public Date cancelDate;
 	public String cancelUniqueId;
 
+	public int cancelAmount;
+	public int cancelTax;
+
 	public String cardNumber;
 	public String cardExpire;
 	public String cardCvc;
+
+	public int getCancelAmount() {
+		return cancelAmount;
+	}
+
+	public void setCancelAmount(int cancelAmount) {
+		this.cancelAmount = cancelAmount;
+	}
+
+	public int getCancelTax() {
+		return cancelTax;
+	}
+
+	public void setCancelTax(int cancelTax) {
+		this.cancelTax = cancelTax;
+	}
 
 	public Date getCancelDate() {
 		return cancelDate;

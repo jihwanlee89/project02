@@ -1,5 +1,6 @@
 package com.springboot.payment.responseVo.payCancelVo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -57,8 +58,10 @@ public class CancelResponseVo extends SuccessCancelResponseVo {
 		this.status = status;
 	}
 
-	public Date getCancelDate() {
-		return cancelDate;
+	public String getCancelDate() {
+		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return cancelDate != null ? simpleDate.format(cancelDate) : null;
+
 	}
 
 	public void setCancelDate(Date cancelDate) {

@@ -8,26 +8,33 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.jboss.logging.MDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.util.ContentCachingResponseWrapper;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.payment.component.GenerateIdTool;
 
 public class PaymentFilter implements Filter {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	ObjectMapper objectMapper = new ObjectMapper();
+
+	@SuppressWarnings("deprecation")
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
 		RequestWrapper requestWrapper;
-		String transaction_id = GenerateIdTool.generateTransactionID();
+		String transactionId = GenerateIdTool.generateTransactionID();
 
 		MDC.clear();
-		MDC.put("TRANSACTION_ID", transaction_id);
+		MDC.put("TRANSACTION_ID", transactionId);
 
 		logger.info("================ Rquest ================");
 		logger.info("RequestURL : [" + ((HttpServletRequest) request).getRequestURL() + "]");
@@ -42,13 +49,24 @@ public class PaymentFilter implements Filter {
 			logger.info("Request Logging END");
 
 		} else {
-			requestWrapper = new RequestWrapper((HttpServletRequest) request, transaction_id);
+			requestWrapper = new RequestWrapper((HttpServletRequest) request, transactionId);
 			logger.info("Request Logging START");
 			logger.info(requestWrapper.getRequestBody());
 			logger.info("Request Logging END");
 		}
 
-		chain.doFilter(requestWrapper, response);
+		ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(
+				(HttpServletResponse) response);
+
+		chain.doFilter(requestWrapper, responseWrapper);
+
+		logger.info("================ Response ================");
+		logger.info("ContentType : [" + responseWrapper.getContentType() + "]");
+		logger.info("Response Logging START");
+		logger.info(IOUtils.toString(responseWrapper.getContentInputStream()));
+		logger.info("Response Logging END");
+
+		responseWrapper.copyBodyToResponse();
 
 		return;
 	}

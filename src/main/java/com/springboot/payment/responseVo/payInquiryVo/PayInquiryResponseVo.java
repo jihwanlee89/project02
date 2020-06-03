@@ -1,6 +1,9 @@
 package com.springboot.payment.responseVo.payInquiryVo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,12 +17,30 @@ public class PayInquiryResponseVo {
 	public String status;
 	public int amount;
 	public int tax;
+	public int cancelAmount;
+	public int cancelTax;
 	public String cardNumber;
 	public String cardExpire;
 	public String cardCvc;
 	public int cardQuota;
 	public Date applDate;
 	public Date cancelDate;
+
+	public int getCancelAmount() {
+		return cancelAmount;
+	}
+
+	public void setCancelAmount(int cancelAmount) {
+		this.cancelAmount = cancelAmount;
+	}
+
+	public int getCancelTax() {
+		return cancelTax;
+	}
+
+	public void setCancelTax(int cancelTax) {
+		this.cancelTax = cancelTax;
+	}
 
 	public String getUniqueId() {
 		return uniqueId;
@@ -85,16 +106,20 @@ public class PayInquiryResponseVo {
 		this.cardQuota = cardQuota;
 	}
 
-	public Date getApplDate() {
-		return applDate;
+	public String getApplDate() {
+		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return applDate != null ? simpleDate.format(applDate) : null;
 	}
 
 	public void setApplDate(Date applDate) {
 		this.applDate = applDate;
 	}
 
-	public Date getCancelDate() {
-		return cancelDate;
+	public String getCancelDate() {
+		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		return cancelDate != null ? simpleDate.format(cancelDate) : null;
+
 	}
 
 	public void setCancelDate(Date cancelDate) {

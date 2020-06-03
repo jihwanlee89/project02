@@ -1,5 +1,6 @@
 package com.springboot.payment.responseVo.payExcuteVo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CardPayResponseVo extends SuccessPayResponseVo {
@@ -26,8 +27,10 @@ public class CardPayResponseVo extends SuccessPayResponseVo {
 		this.status = status;
 	}
 
-	public Date getApplDate() {
-		return applDate;
+	public String getApplDate() {
+
+		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return applDate != null ? simpleDate.format(applDate) : null;
 	}
 
 	public void setApplDate(Date applDate) {

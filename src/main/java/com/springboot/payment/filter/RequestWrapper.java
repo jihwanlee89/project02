@@ -41,7 +41,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		JSONParser jsonParser = new JSONParser();
 		try {
 			jsonObject = (JSONObject) jsonParser.parse(this.requestBody);
-			jsonObject.put("transaction_id", transactionId);
+			jsonObject.put("transactionId", transactionId);
 			this.rawData = jsonObject.toString().getBytes();
 			this.requestBody = new String(rawData);
 		} catch (ParseException e) {
