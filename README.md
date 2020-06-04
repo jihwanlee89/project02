@@ -265,6 +265,16 @@ insert 하였으며 카드사 DB 저장 성공시 상태를 PAY로 업데이트 
 위해 TABLE(PAYMENT\_TRANSACTION\_LOCK) 에 AOP를 활용하여 uniqueId를
 insert 및 delete 하였습니다.
 
+**테스트 케이스**
+
+*결제 : 하나의 카드번호로 동시에 결제를 할 수 없습니다.*
+
+*전체취소 : 결제 한 건에 대한 전체취소를 동시에 할 수 없습니다.*
+
+*부분취소 : 결제 한 건에 대한 부분취소를 동시에 할 수 없습니다.*
+
+**위 테스트에 대해서 springboot 로 webappliation을 구동 시킨 후 Project02MultiThreadCancel.java, Project02MultiThreadPay1.java 로 runnable interface를 상속받아 HttpURLConnection 으로 직접 구동중인 로컬 호스트 테스트 하여 검증 하였습니다.**
+
 **7. 테이블 명세서**
 
 *TABLE : PAYMENT\_TRANSACTION\_LOCK (거래 트랜잭션 제어 테이블)*
