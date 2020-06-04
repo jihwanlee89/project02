@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.springboot.payment.exception.code.ErrorCode;
-import com.springboot.payment.exception.customException.DataBaseException;
 import com.springboot.payment.exception.customException.TransactionLockException;
 import com.springboot.payment.mapper.PaymentMapper;
 import com.springboot.payment.model.TransactionLockModel;
@@ -28,7 +27,7 @@ public class PaymentAop {
 	PaymentMapper paymentMapper;
 
 	@Before("execution (* com.springboot.payment.service.impl.PaymentServiceImpl.cardPayProcess (..))")
-	public void checkCardLock(JoinPoint joinPoint) throws DataBaseException {
+	public void checkCardLock(JoinPoint joinPoint) throws TransactionLockException {
 		Object paramObject = joinPoint.getArgs()[0];
 
 		if (paramObject instanceof CardPayRequestVo) {
@@ -59,13 +58,13 @@ public class PaymentAop {
 				logger.info("CARD LOCK INSERT END");
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new DataBaseException();
+				throw new TransactionLockException(ErrorCode.ER008);
 			}
 		}
 	}
 
 	@After("execution (* com.springboot.payment.service.impl.PaymentServiceImpl.cardPayProcess (..))")
-	public void deleteCardLock(JoinPoint joinPoint) throws DataBaseException {
+	public void deleteCardLock(JoinPoint joinPoint) throws TransactionLockException {
 
 		logger.info("CARD LOCK DELETE START");
 		Object paramObject = joinPoint.getArgs()[0];
@@ -86,14 +85,14 @@ public class PaymentAop {
 				logger.info("CARD  LOCK : " + String.valueOf(paymentMapper.lockKeyDelete(transactionControllModel)));
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new DataBaseException();
+				throw new TransactionLockException(ErrorCode.ER008);
 			}
 		}
 		logger.info("CARD  LOCK DELETE END");
 	}
 
 	@Before("execution (* com.springboot.payment.service.impl.PaymentServiceImpl.cancelProcess (..))")
-	public void checkCancelLock(JoinPoint joinPoint) throws DataBaseException {
+	public void checkCancelLock(JoinPoint joinPoint) throws TransactionLockException {
 		Object paramObject = joinPoint.getArgs()[0];
 
 		if (paramObject instanceof PayCancelRequestVo) {
@@ -122,13 +121,13 @@ public class PaymentAop {
 				logger.info("CANCEL LOCK INSERT END");
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new DataBaseException();
+				throw new TransactionLockException(ErrorCode.ER009);
 			}
 		}
 	}
 
 	@After("execution (* com.springboot.payment.service.impl.PaymentServiceImpl.cancelProcess (..))")
-	public void deleteCancelLock(JoinPoint joinPoint) throws DataBaseException {
+	public void deleteCancelLock(JoinPoint joinPoint) throws TransactionLockException {
 
 		logger.info("CANCEL LOCK DELETE START");
 		Object paramObject = joinPoint.getArgs()[0];
@@ -148,7 +147,7 @@ public class PaymentAop {
 				logger.info("CANCEL LOCK : " + String.valueOf(paymentMapper.lockKeyDelete(transactionControllModel)));
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new DataBaseException();
+				throw new TransactionLockException(ErrorCode.ER009);
 			}
 		}
 		logger.info("CANCEL LOCK DELETE END");

@@ -8,7 +8,7 @@ import com.springboot.payment.requestVo.CommonRequestVo;
 
 public class PayCancelRequestVo extends CommonRequestVo {
 
-	@Max(value = 1000000000, message = "100원 이상, 10억원 이하만 가능합니다.")
+	@Max(value = 1000000000, message = "10억원 이하만 가능합니다.")
 	@NotNull(message = "결제 및 취소 금액은 필수 입니다.")
 	public Integer amount;
 
