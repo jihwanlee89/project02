@@ -57,7 +57,9 @@ public class PaymentFilter implements Filter {
 
 		ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(
 				(HttpServletResponse) response);
-
+		
+		responseWrapper.setCharacterEncoding("utf-8");
+		
 		chain.doFilter(requestWrapper, responseWrapper);
 
 		logger.info("================ Response ================");

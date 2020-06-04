@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -26,6 +27,16 @@ public class PaymentExceptionHandler {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	PaymentErrorResponse paymentErrorResponse = new PaymentErrorResponse();
+
+	@ExceptionHandler(BindException.class)
+	public ResponseEntity<PaymentErrorResponse> handleBindException(BindException e) {
+		FieldError fieldError = e.getBindingResult().getFieldError();
+
+		logger.warn("BAD_REQUEST : {} / {}", fieldError.getCode(), fieldError.getDefaultMessage());
+
+		return new ResponseEntity<PaymentErrorResponse>(
+				paymentErrorResponse.of(ErrorCode.ER010, fieldError.getDefaultMessage()), HttpStatus.BAD_REQUEST);
+	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<PaymentErrorResponse> handleMethodArgumentNotValidException(
@@ -97,7 +108,7 @@ public class PaymentExceptionHandler {
 
 		return new ResponseEntity<>(paymentErrorResponse.of(e.errorCdoe), HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@ExceptionHandler(NoPaymentException.class)
 	public ResponseEntity<PaymentErrorResponse> handleNoPaymentException(NoPaymentException e) {
 
@@ -105,7 +116,7 @@ public class PaymentExceptionHandler {
 
 		return new ResponseEntity<>(paymentErrorResponse.of(e.errorCdoe), HttpStatus.OK);
 	}
-	
+
 	@ExceptionHandler(TransactionLockException.class)
 	public ResponseEntity<PaymentErrorResponse> handleTransactionException(TransactionLockException e) {
 
