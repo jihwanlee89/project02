@@ -60,7 +60,7 @@
 			(TAX - SELECT NVL(SUM(TAX), 0) FROM CARD_CANCEL_TRANS WHERE UNIQUE_ID = #{uniqueId} AND STATUS IN ('CANCEL', 'PRTCCANCEL')) AS cancelAbleTax				
 		FROM CARD_PAYMENT_TRANS
 		WHERE 
-			UNIQUE_ID = #{uniqueId}
+			UNIQUE_ID = #{uniqueId} AND STATUS != 'READY'
 	</select>
 	
 	<insert id="cardCancelProcessDataInsert" parameterType="CardPayModel">
